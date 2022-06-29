@@ -15,6 +15,9 @@ public class mainContacts {
     public static void main(String[] args) {
 
         createFileSystem();                         // create directory and contacts file
+//        loadContactLinesToList();                   // load contacts lines to arrayList
+        List<String> testOutput = loadContactLinesToList();
+
         menuSystem();                               // operates CLI menu system
 
     }
@@ -26,6 +29,12 @@ public class mainContacts {
         boolean loopAgain = true;
 
         do {
+            // test print out contact lines
+            System.out.println("Hi");
+            printHeader();
+//            for (String contact : testOutput) {
+//                System.out.println(contact);
+//            }
 
             System.out.print("1. View contacts.\n" +
                     "2. Add a new contact.\n" +
@@ -38,9 +47,10 @@ public class mainContacts {
             String userInput = scanner.next();       // Getting input as a String
 
             switch (userInput) {
-                case "1" ->                                       // View contacts
-                        displayContacts();
-
+                case "1" -> {                                     // View contacts
+//                    displayContacts();
+                    System.out.println();
+                }
                 case "2" -> {                                     // Add new contact
                     addContact();
                     System.out.println();
@@ -49,9 +59,10 @@ public class mainContacts {
                     searchContacts();
                     System.out.println();
                 }
-                case "4" ->                                       // Delete contact
-                        deleteContacts();
-
+                case "4" -> {                                    // Delete contact
+                    deleteContacts();
+                    System.out.println();
+                }
                 case "5" -> {                                     // Exit
                     System.out.println("Thanks");
                     loopAgain = false;
@@ -147,63 +158,29 @@ public class mainContacts {
     }
 
     // TODO: display contacts
-    public static void displayContacts() {
+//    public static void displayContacts() {
 
-        try {
-
-            // Create a list of strings that represent the file data.
-            List<String> fileData = Files.readAllLines(Paths.get(dirName, filename));
+//        try {
 
             // Print header
-            printHeader();
+//            printHeader();
 
             //Print out each line in the contacts.txt file
-            for (String line: fileData) {
-                System.out.println(line);
-            }
-            System.out.println();
+//            for (String line: contactLines) {
+//                System.out.println(line);
+//            }
+//            System.out.println();
 
-        } catch( IOException iox) {
-            iox.printStackTrace();
-        }
-    }
+//        } catch( IOException iox) {
+//            iox.printStackTrace();
+//        }
+//    }
 
 //    public static List<Contact> loadContacts ();
 
     public static void printHeader () {
         System.out.println("         Name         |       Number");
         System.out.println("----------------------|-------------------");
-    }
-
-    public static void createFileSystem() {
-
-        try {
-
-            // Using static method to get filepath for directory.
-            Path dataDirectory = Paths.get(dirName);
-            // Using static method to get filepath within directory stated above.
-            Path dataFile = Paths.get(dirName, filename);
-
-            // Files class - contains static methods to manipulate files.
-            // Files.exists() - returns boolean
-            // Files.notExists() - returns boolean
-
-            // Create a directory if it does not exist.
-            if(Files.notExists(dataDirectory)) {
-                System.out.println("Creating new directory named: " + dataDirectory);
-//                 Files.createDirectories(Path path) - returns a Path
-                Files.createDirectories(dataDirectory); // accepts a Path object
-            }
-            // Create a file based on the path of the file.
-            if(!Files.exists(dataFile)) {
-                System.out.println("Your new file has been created!");
-                // Files.createFile(Path path) - returns a Path
-                createFile(dataFile);
-            }
-
-        } catch(IOException iox) {
-            iox.printStackTrace();
-        }
     }
 
     // TODO: search contacts
@@ -267,8 +244,8 @@ public class mainContacts {
 
                 // Ask if found item/line is the info to delete
                 if (line.toLowerCase().contains(searchDeleteItem)) {
-                    System.out.printf("Found search info: %s  -  ", line);
-                    System.out.print("Is this the information you want to delete?(Y/n):");
+                    System.out.printf("Found search item: %s  -  ", line);
+                    System.out.print("Is this the information you want to delete?(Y/n): ");
                     Scanner askDelete = new Scanner(System.in);
                     String deleteYorN = askDelete.next().toLowerCase();
 
@@ -295,6 +272,63 @@ public class mainContacts {
         } catch( IOException iox) {
             iox.printStackTrace();
         }
+    }
+
+    public static void createFileSystem() {
+
+        try {
+
+            // Using static method to get filepath for directory.
+            Path dataDirectory = Paths.get(dirName);
+            // Using static method to get filepath within directory stated above.
+            Path dataFile = Paths.get(dirName, filename);
+
+            // Files class - contains static methods to manipulate files.
+            // Files.exists() - returns boolean
+            // Files.notExists() - returns boolean
+
+            // Create a directory if it does not exist.
+            if(Files.notExists(dataDirectory)) {
+                System.out.println("Creating new directory named: " + dataDirectory);
+//                 Files.createDirectories(Path path) - returns a Path
+                Files.createDirectories(dataDirectory); // accepts a Path object
+            }
+            // Create a file based on the path of the file.
+            if(!Files.exists(dataFile)) {
+                System.out.println("Your new file has been created!");
+                // Files.createFile(Path path) - returns a Path
+                createFile(dataFile);
+            }
+
+        } catch(IOException iox) {
+            iox.printStackTrace();
+        }
+    }
+
+    public static List<String> loadContactLinesToList() {
+
+        try {
+
+            // Using static method to get filepath for directory.
+            Path dataDirectory = Paths.get(dirName);
+            // Using static method to get filepath within directory stated above.
+            Path dataFile = Paths.get(dirName, filename);
+
+            // Create a list of strings that represent the file data.
+            List<String> contactLines = Files.readAllLines(Paths.get(dirName, filename));
+
+            // test print out contact lines
+//            printHeader();
+//            for (String contact : contactLines) {
+//                System.out.println(contact);
+//            }
+
+            return contactLines;
+
+        } catch(IOException iox) {
+            iox.printStackTrace();
+        }
+        return loadContactLinesToList();
     }
 }
 
